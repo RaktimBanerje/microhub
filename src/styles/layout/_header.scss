@@ -1,0 +1,69 @@
+$header-background: #fff;
+$header-link-color: rgba(44, 56, 74, 0.681);
+$header-link-color-hover: rgba(44, 56, 74, 0.95);
+$header-brand-color: #4f5d73;
+
+//Dashboard NavButton
+.invite-button{
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem 1rem;
+}
+
+//HeaderProfileNav
+.logout { 
+  color: #608BAC;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem 1rem;
+  &:hover {
+    color: #EBC890;
+    text-decoration: none;
+  }
+}
+
+.header {
+  background: $header-background;
+
+  .header-brand {
+    color: $header-brand-color;
+  }
+
+  .header-navbar {
+    min-height: 3rem;
+
+    .header-toggler {
+      color: $header-link-color;
+    }
+
+    .header-nav {
+      .nav-link {
+        color: $header-link-color;
+
+        &:hover {
+          color: $header-link-color-hover;
+        }
+      }
+    }
+  }
+}
