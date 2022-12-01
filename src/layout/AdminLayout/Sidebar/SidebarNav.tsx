@@ -161,6 +161,9 @@ export default function SidebarNav() {
       <SidebarNavItem icon={faBell} href="/plans">
         Manage Plans
       </SidebarNavItem>
+      <SidebarNavItem icon={faBell} href="/mealPlanner">
+        Meal Planner
+      </SidebarNavItem>
       <SidebarNavItem icon={faPerson} href="/clients">
         Client Management{" "}
       </SidebarNavItem>

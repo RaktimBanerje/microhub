@@ -50,6 +50,7 @@ const Home = ({recipes: RECIPES, meals: MEALS}) => {
   }
 
   React.useEffect(() => {
+    console.log(RECIPES)
     setRecipes(RECIPES)
     setMeals(MEALS)
   }, [])
@@ -61,7 +62,7 @@ const Home = ({recipes: RECIPES, meals: MEALS}) => {
           <Accordion defaultActiveKey="0">
             {recipe.ingredients.map((ingredient, index) => (
               <Accordion.Item eventKey={`${recipe.id}-${index}`} style={{borderLeft: 0, borderTop: 0, borderRight: 0}}>
-                <Accordion.Header>{ingredient.name}</Accordion.Header>
+                <Accordion.Header>{ingredient.name} ({ingredient.amount}{ingredient.unit})</Accordion.Header>
                 <Accordion.Body>
                   <Row className="justify-content-between align-items-center">
                     <Col>
@@ -119,7 +120,7 @@ const Home = ({recipes: RECIPES, meals: MEALS}) => {
         <Accordion defaultActiveKey="0">
           {meal.recipes.map((recipe, index) => (
             <Accordion.Item eventKey={`${meal.id}-${index}`} style={{borderLeft: 0, borderTop: 0, borderRight: 0}}>
-              <Accordion.Header>{recipe.name}</Accordion.Header>
+              <Accordion.Header>{recipe.name} ({recipe.amount}g)</Accordion.Header>
               <Accordion.Body>
                 <Row className="justify-content-between align-items-center">
                   <Col>
