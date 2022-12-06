@@ -14,14 +14,6 @@ import {
   Spinner
 } from "react-bootstrap";
 
-function MealCard ({meal}) {
-    return (
-        <Card body>
-            <h3>{meal.name}</h3>
-        </Card>
-    )
-}
-
 const Client = () => {
   
   const router = useRouter()
@@ -49,29 +41,31 @@ const Client = () => {
 
   return (
     <AdminLayout>
-      {user && <h3 className="h3 mb-4 text-gray-800">Meals for {user.name}</h3>}
+      {user && <h3 className="h3 mb-4 text-gray-800">{user.name}</h3>}
       <Container>
-        {user ? (
+        {user && user?.meals?.length > 0 ? (
           <Card  body style={{border: "none", marginTop: 10, marginBottom: 10}}>
-          <div className='table-responsive'>
               <Table responsive hover>
                   <thead>
                       <tr>
-                          <td>Meal type</td>
-                          <td>Fat (g)</td>
-                          <td>Protein (g)</td>
-                          <td>Calories (kcal)</td>
-                          <td>Carbohydrates (g)</td>
-                          <td>Protein (%)</td>
-                          <td>Fat (%)</td>
-                          <td>Carbohydrates (%)</td>
-                          {/* <th></th> */}
+                          <th>Meal name</th>
+                          <th>Meal for</th>
+                          <th>Meal type</th>
+                          <th>Fat (g)</th>
+                          <th>Protein (g)</th>
+                          <th>Calories (kcal)</th>
+                          <th>Carbohydrates (g)</th>
+                          <th>Protein (%)</th>
+                          <th>Fat (%)</th>
+                          <th>Carbohydrates (%)</th>
                       </tr>
                   </thead>
                   <tbody>
                       {user.meals.map((meal, index) => (
                           <tr key={index}>
                               <td>{meal.name}</td>
+                              <td>{meal.for}</td>
+                              <td>{meal.type}</td>
                               <td>{meal.fat}</td>
                               <td>{meal.protein}</td>
                               <td>{meal.calories}</td>
@@ -79,19 +73,10 @@ const Client = () => {
                               <td>{meal.proteinPercentage}</td>
                               <td>{meal.fatPercentage}</td>
                               <td>{meal.carbohydratesPercentage}</td>
-                              {/* <td>
-                                  <button type="button" className="btn btn-danger mx-1" onClick={() => {
-                                      const newUser = {...user}
-                                      newUser.meals.splice(index, 1)
-                                      setUser(newUser)
-                                  }}>Delete</button>
-                              </td> */}
                           </tr>
                       ))}
                   </tbody>
               </Table>
-              {/* <button className='btn btn-success mx-1' onClick={() => save()}>Save</button> */}
-          </div>
           </Card>
         ) : (
           <Row className="justify-content-center align-items-center w-100">

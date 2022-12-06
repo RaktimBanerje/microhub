@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import type { NextPage } from "next";
 import { AdminLayout } from "@layout";
-import { Container, Row, Col, Card, Accordion, Table } from "react-bootstrap"
+import { Container, Row, Col, Card, Accordion, Table, Button } from "react-bootstrap"
 import Image from "next/image"
 
 const Home = ({recipes: RECIPES, meals: MEALS}) => {
@@ -23,7 +23,7 @@ const Home = ({recipes: RECIPES, meals: MEALS}) => {
 
       const response1 = await axios.get("/api/meal/read")
       if(response1.status == 200) {
-          setMeals(response.data)
+          setMeals(response1.data)
       }else {
           alert("Oops! something went wrong")
       }
@@ -35,7 +35,7 @@ const Home = ({recipes: RECIPES, meals: MEALS}) => {
       axios.delete(`/api/recipe/delete?id=${id}`)
       .then(response => {
           if(response.status == 200) {
-              loadData()
+            loadData()
           }
       })
   }
@@ -44,13 +44,12 @@ const Home = ({recipes: RECIPES, meals: MEALS}) => {
       axios.delete(`/api/meal/delete?id=${id}`)
       .then(response => {
           if(response.status == 200) {
-              loadData()
+            loadData()
           }
       })
   }
 
   React.useEffect(() => {
-    console.log(RECIPES)
     setRecipes(RECIPES)
     setMeals(MEALS)
   }, [])
@@ -58,7 +57,14 @@ const Home = ({recipes: RECIPES, meals: MEALS}) => {
  function Recipe (recipe) {
     return (
       <Card body style={{border: "none", marginTop: 10, marginBottom: 10}}>
-          <h5>{recipe.name}</h5>
+          <Row>
+            <Col><h5>{recipe.name}</h5></Col>
+            <Col className="text-end">
+              <Button variant="outline-dark" size="sm" onClick={() => handleRecipeDelete(recipe.id)}>
+                <i className="fa fa-trash" aria-hidden="true"></i>
+              </Button>
+            </Col>
+          </Row>
           <Accordion defaultActiveKey="0">
             {recipe.ingredients.map((ingredient, index) => (
               <Accordion.Item eventKey={`${recipe.id}-${index}`} style={{borderLeft: 0, borderTop: 0, borderRight: 0}}>
@@ -116,7 +122,14 @@ const Home = ({recipes: RECIPES, meals: MEALS}) => {
  function Meal (meal) {
     return (
       <Card body style={{border: "none", marginTop: 10, marginBottom: 10}}>
-        <h5>{meal.name}</h5>
+        <Row>
+          <Col><h5>{meal.name}</h5></Col>
+          <Col className="text-end">
+            <Button variant="outline-dark" size="sm" onClick={() => handleMealDelete(meal.id)}>
+              <i className="fa fa-trash" aria-hidden="true"></i>
+            </Button>
+          </Col>
+        </Row>
         <Accordion defaultActiveKey="0">
           {meal.recipes.map((recipe, index) => (
             <Accordion.Item eventKey={`${meal.id}-${index}`} style={{borderLeft: 0, borderTop: 0, borderRight: 0}}>
@@ -176,20 +189,20 @@ const Home = ({recipes: RECIPES, meals: MEALS}) => {
       <Container fluid>
         <Row>
           <h3>Meals</h3>
-          {meals.map((meal, index) => (
+          {meals.length == 0 ? <h4 className="text-center">There are no meal plans</h4> : (meals.map((meal, index) => (
             <Col md="4">
               <Meal id={`recipe-${index}`} {...meal} />
             </Col>
-          ))}
+          )))}
         </Row>
 
         <Row className="mt-5">
           <h3>Recipes</h3>
-          {recipes.map((recipe, index) => (
+          {recipes.length == 0 ? <h4 className="text-center">There are no recipes</h4> : (recipes.map((recipe, index) => (
             <Col md="4">
               <Recipe id={`recipe-${index}`} {...recipe} />
             </Col>
-          ))}
+          )))}
         </Row>
       </Container>
     </AdminLayout>

@@ -4,14 +4,12 @@ import type { NextPage } from "next";
 import { AdminLayout } from "@layout";
 import {
   Button,
-  ButtonGroup,
   Card,
-  Dropdown,
-  ProgressBar,
   Container,
   Row,
   Col,
-  Table
+  Table,
+  Form
 } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
@@ -104,23 +102,30 @@ const saveMeal = () => {
 
   return (
     <AdminLayout>
-      <h3>Create Meal</h3>
-      <Card body>
-        <Row>
-          <Col md="5"></Col>
-          <Col md="5">
-            <input 
-              type="text" 
-              className='form-control' 
+      <Row>
+        <Col md="6">
+          <h3>Create Meal</h3>
+        </Col>
+        <Col md="4">
+            <Form.Control 
               onChange={(event) => setMeal(meal => ({...meal, name: event.target.value}))} 
               placeholder="Meal name"
             />
-          </Col>
-          <Col md="2">
-            <button className='btn btn-outline-success' onClick={saveMeal}>Save Meal</button>
-          </Col>
+        </Col>
+        <Col md="2">
+          <Button 
+            variant='success' 
+            className="rounded-pill"
+            onClick={saveMeal}>Save Meal</Button>
+        </Col>
+      </Row>
+      
+      <Card body style={{border: "none", marginTop: 10, marginBottom: 10}}>
+        <Row>
+          <Col md="5"></Col>
+
         </Row>
-        <Table responsive striped hover className="mt-4">
+        <Table responsive hover className="mt-4">
             <thead>
                 <tr>
                     <th>Recipe Name</th>
@@ -150,7 +155,7 @@ const saveMeal = () => {
                       </select>
                   </td>
                   <td>
-                      <input 
+                      <Form.Control 
                         type="text" 
                         className="form-control" 
                         value={`${recipe.amount || 1}`} onChange={(event) => calculate(event, index)}
@@ -181,9 +186,12 @@ const saveMeal = () => {
                 </tr>
             </tfoot>
         </Table>
-        <button className='btn btn-outline-success w-100' onClick={() => {
+        <Button 
+          variant='outline-success' 
+          className="w-100"
+          onClick={() => {
             setMeal(meal => ({...meal, recipes: [...meal.recipes, mealRecipe]}))
-        }}>Add Recipe</button>
+          }}><i className="fa fa-plus" aria-hidden="true"></i></Button>
       </Card>  
     </AdminLayout>
   )

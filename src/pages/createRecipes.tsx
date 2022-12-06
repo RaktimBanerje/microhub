@@ -121,18 +121,33 @@ const Create = () => {
             <div className="row">
                 <div className="col-md-12">
                         <Container fluid>
+                            <Row>
+                                <Col md="6">
+                                    <h3 className="mb-4">Create Recipe</h3>
+                                </Col>
+                                <Col md="4">
+                                    <Form.Control 
+                                        type="text" 
+                                        className='form-control' 
+                                        onChange={event => setRecipe({...recipe, name: event.target.value})} 
+                                        placeholder="Recipe name"
+                                    />
+                                </Col>
+                                <Col md="2">
+                                    <Button 
+                                        variant="success"
+                                        className="rounded-pill"
+                                        onClick={saveRecipe}>Save Recipe</Button>
+                                </Col>
+                            </Row>
+                            
                             <Card body style={{border: "none", marginTop: 10, marginBottom: 10}}>
-                                <Row>
-                                    <Col md="6">
-                                        <h5 className="text-mute mb-4">Create Recipe</h5>
-                                    </Col>
+                                <Row className="mb-2">
+                                    <Col md="6"></Col>
                                     <Col md="6">
                                         <Ingredient data={foodName} setData={setFoodName} unit={unit} setUnit={setUnit} />
                                     </Col>
                                 </Row>
-                            </Card>
-            
-                            <Card body style={{border: "none", marginTop: 10, marginBottom: 10}}>
                                 <Table responsive hover>
                                     <thead>
                                         <tr>
@@ -160,7 +175,11 @@ const Create = () => {
                                                 <td>{ingredient.details.nutrition.caloricBreakdown.percentProtein}</td>
                                                 <td>{ingredient.details.nutrition.caloricBreakdown.percentFat}</td>
                                                 <td>{ingredient.details.nutrition.caloricBreakdown.percentCarbs}</td>
-                                                <td><button className='btn btn-outline-success' onClick={() => addIngredient(ingredient)}>Add</button></td>
+                                                <td>
+                                                    <Button 
+                                                        variant='outline-success' 
+                                                        onClick={() => addIngredient(ingredient)}><i className="fa fa-plus" aria-hidden="true"></i></Button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -175,22 +194,7 @@ const Create = () => {
                             </Card>
             
                             <Card body style={{border: "none", marginTop: 10, marginBottom: 10}}>
-                                <Row>
-                                    <Col md="5">
-                                        <h5 className="my-3">Recipe Details (for 100g)</h5>
-                                    </Col>
-                                    <Col md="5">
-                                        <input 
-                                            type="text" 
-                                            className='form-control' 
-                                            onChange={event => setRecipe({...recipe, name: event.target.value})} 
-                                            placeholder="Recipe name"
-                                        />
-                                    </Col>
-                                    <Col md="2">
-                                        <button className="btn btn-success" onClick={saveRecipe}>Save Recipe</button>
-                                    </Col>
-                                </Row>
+                                <h5 className="my-3">Recipe Details (for 100g)</h5>
                             
                                 <Table responsive striped hover className="mt-4">
                                     <thead>
@@ -212,16 +216,17 @@ const Create = () => {
                                             <tr key={index}>
                                                 <td>{ingredient.name}</td>
                                                 <td>
-                                                    <input 
+                                                    <Form.Control 
                                                         type="text" 
                                                         className="form-control" 
                                                         style={{width: "100px"}} 
-                                                        value={recipe.ingredients[index].amount} onChange={event => {
-                                                        const data = {...recipe}
-                                                        data.ingredients[index].amount = event.target.value
-                                                        setRecipe(data)
-                                                        calculate()
-                                                    }}/>
+                                                        value={recipe.ingredients[index].amount} 
+                                                        onChange={event => {
+                                                            const data = {...recipe}
+                                                            data.ingredients[index].amount = event.target.value
+                                                            setRecipe(data)
+                                                            calculate()
+                                                        }}/>
                                                 </td>
                                                 <td>{ingredient.details.nutrition.nutrients.map(nutrient => nutrient.name.toLowerCase() == "fat" && `${(Number(ingredient.amount) * Number(nutrient.amount)) + ' ' + ingredient.unit}`)}</td>
                                                 <td>{ingredient.details.nutrition.nutrients.map(nutrient => nutrient.name.toLowerCase() == "protein" && `${(Number(ingredient.amount) * Number(nutrient.amount)) + ' ' + ingredient.unit}`)}</td>

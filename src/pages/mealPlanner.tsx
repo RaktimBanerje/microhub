@@ -31,7 +31,8 @@ const MealPlanner: NextPage = () => {
         carbohydrates: 0,
         proteinPercentage: 0,
         fatPercentage: 0,
-        carbohydratesPercentage: 0
+        carbohydratesPercentage: 0,
+        recipes: []
     }
 
     React.useEffect(() => {
@@ -50,7 +51,6 @@ const MealPlanner: NextPage = () => {
     }, [])
 
     const save = () => {
-        console.log(data)
         axios.post("/api/user-meal", {data})
         .then(response => response.status == 200 ? alert("Success") : alert("Failed"))
         .catch(err => alert("Failed"))
@@ -84,6 +84,7 @@ const MealPlanner: NextPage = () => {
                 <thead>
                     <tr>
                         <th>Meal</th>
+                        <th>Meal type</th>
                         <th>Meal for</th>
                         <th>Fat (g)</th>
                         <th>Protein (g)</th>
@@ -92,6 +93,7 @@ const MealPlanner: NextPage = () => {
                         <th>Protein (%)</th>
                         <th>Fat (%)</th>
                         <th>Carbohydrates (%)</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,10 +101,10 @@ const MealPlanner: NextPage = () => {
                         <tr key={index}>
                             <td>
                                 <select 
-                                    className='form-control' 
+                                    className='form-control'
+                                    style={{width: "200px"}} 
                                     onChange={(event) => {
                                     const meal = JSON.parse(event.target.value)
-                                    console.log(meal)
                                     const newData = {...data}
                                     newData.meals[index] = {
                                         id: meal.id,
@@ -113,7 +115,8 @@ const MealPlanner: NextPage = () => {
                                         carbohydrates: meal.carbohydrates,
                                         proteinPercentage: meal.proteinPercentage,
                                         fatPercentage: meal.fatPercentage,
-                                        carbohydratesPercentage: meal.carbohydratesPercentage
+                                        carbohydratesPercentage: meal.carbohydratesPercentage,
+                                        recipes: meal.recipes
                                     }
                                     setData(newData)
                                 }}>
@@ -125,10 +128,23 @@ const MealPlanner: NextPage = () => {
                                 <input 
                                     type='text' 
                                     className='form-control' 
-                                    style={{width: "200px"}}
+                                    placeholder="Lunch/ Dinner/ Snack ..."
+                                    style={{width: "100px"}}
                                     onChange={event => {
                                     const newData = {...data}
-                                    newData.meals[index].for = event.target.value
+                                    newData.meals[index].type = (event.target.value).toLowerCase().trim()
+                                    setData(newData)
+                                }}/>
+                            </td>
+                            <td>
+                                <input 
+                                    type='text' 
+                                    className='form-control' 
+                                    placeholder="Sun/ Mon/ Tue ..."
+                                    style={{width: "100px"}}
+                                    onChange={event => {
+                                    const newData = {...data}
+                                    newData.meals[index].for = (event.target.value).toLowerCase().trim()
                                     setData(newData)
                                 }}/>
                             </td>
@@ -139,11 +155,25 @@ const MealPlanner: NextPage = () => {
                             <td>{meal.proteinPercentage}</td>
                             <td>{meal.fatPercentage}</td>
                             <td>{meal.carbohydratesPercentage}</td>
+                            <td>
+                                <Button 
+                                    variant="outline-dark"
+                                    size="sm" 
+                                    onClick={() => {
+                                        data.meals.splice(index, 1)
+                                        setData(prevData => ({...data}))
+                                    }}><i className="fa fa-trash" aria-hidden="true"></i></Button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
-            <button className='btn btn-outline-success w-100' onClick={() => setData(data => ({...data, meals: [...data.meals, meal]}))}>Add</button>
+            <Button 
+                variant='outline-success' 
+                className="w-100"
+                onClick={() => setData(data => ({...data, meals: [...data.meals, meal]}))}>
+                    <i className="fa fa-plus" aria-hidden="true"></i>
+            </Button>
         </Card>
 
     </AdminLayout>

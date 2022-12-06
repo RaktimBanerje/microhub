@@ -1,38 +1,18 @@
 import React from "react";
-import type { NextPage } from "next";
-import Image from "next/image";
 import { AdminLayout } from "@layout";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import {
-  faArrowDown,
-  faArrowUp,
-  faDownload,
-  faEllipsisVertical,
-  faMars,
-  faSearch,
-  faUsers,
-  faVenus,
-  faChartBar,
-} from "@fortawesome/free-solid-svg-icons";
+import { Formik, Form, Field } from 'formik'
 import {
   Button,
-  ButtonGroup,
   Card,
-  CardGroup,
-  Dropdown,
   Container,
   Nav,
   Navbar,
-  NavItem,
-  NavLink,
-  Table
+  Table,
+  Modal,
 } from "react-bootstrap";
-
-const random = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
 
 const Client = ({users: USERS}) => {
  
@@ -111,7 +91,7 @@ const Client = ({users: USERS}) => {
           <Container>
             <Navbar.Brand>Welcome Back "Person"</Navbar.Brand>
             <Nav className="ml-auto">
-              <Button className="invite-button" href="#">
+              <Button className="invite-button" href="#"  data-toggle="modal" data-target="#myModal" onClick={openForm}>
                 Invite New Client
               </Button>
             </Nav>
@@ -123,7 +103,7 @@ const Client = ({users: USERS}) => {
         <Card style={{border: "none", marginTop: 10, marginBottom: 10}}>
           <Card.Header>Clients</Card.Header>
           <Card.Body>
-              <Table>
+              <Table responsive hover>
                 <thead>
                   <tr>
                     <th>Name</th>
@@ -147,22 +127,95 @@ const Client = ({users: USERS}) => {
                           <td>
                               <div className="btn-group">
                                   <Link href={`/clients/${user.id}`}>
-                                      <a className="btn btn-outline-success mx-1" rel="noopener noreferrer">View</a>
+                                      <a className="btn btn-outline-success mx-1" rel="noopener noreferrer"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                   </Link>
                                   {/* <Link href={`/users/${user.id}`}>
                                       <a className="btn btn-primary mx-1">Edit</a>
                                   </Link> */}
-                                  <button type="button" className="btn btn-outline-danger mx-1" onClick={ () => handleDelete(user.id)}>Delete</button>
+                                  <button type="button" className="btn btn-outline-danger mx-1" onClick={ () => handleDelete(user.id)}><i class="fa fa-trash" aria-hidden="true"></i></button>
                               </div>
                           </td>
                       </tr>
                   ))}
                 </tbody>
               </Table>
-
           </Card.Body>
         </Card>
       </Container>
+
+      <div className="modal" id="myModal">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <Formik
+                            initialValues={initialValues}
+                            onSubmit={handleSubmit}
+                        >
+                            <Form>
+                                    <div className="modal-header">
+                                        <h4 className="modal-title">Add New User</h4>
+                                        <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <div className="modal-body">
+                                    
+                                        {error.isError && (
+                                            <div className="alert alert-danger alert-dismissible">
+                                                <button type="button" className="close" data-dismiss="alert">&times;</button>
+                                                {error.message}
+                                            </div>
+                                        )}
+
+                                        {success.isSuccess && (
+                                            <div className="alert alert-success alert-dismissible">
+                                                <button type="button" className="close" data-dismiss="alert">&times;</button>
+                                                {success.message}
+                                            </div>
+                                        )}
+
+
+                                        <div className="form-group">
+                                            <label htmlFor=''>Name</label>
+                                            <Field type="text" name="name" className="form-control" />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor=''>Email</label>
+                                            <Field type="text" name="email" className="form-control" />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor=''>Gender</label>
+                                            <Field type="text" as="select" name="gender"className="form-control" >
+                                                <option value="">--Select--</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="other">Other</option>
+                                            </Field>
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor=''>DOB</label>
+                                            <Field type="date" name="dob" className="form-control" />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor=''>Height (cms)</label>
+                                            <Field type="text" name="height" className="form-control" />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor=''>Weight (kgs)</label>
+                                            <Field type="text" name="weight" className="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div className="modal-footer">
+                                        <button type="submit" className="btn btn-primary">
+                                            {isSubmitting ? "Submitting..." : "Submit"}
+                                        </button>
+                                        <button type="reset" className="btn btn-warning">Reset</button>
+                                    </div>
+                            </Form>
+                        </Formik>
+                    </div>
+                </div>
+            </div>
+
     </AdminLayout>
   )
 };
